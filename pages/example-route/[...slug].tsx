@@ -1,15 +1,17 @@
 import { useRouter } from "next/router";
 
 function hasMiddlewareMatched(slug?: string[]) {
+  if (!slug) return false;
+
   const values =
-    (typeof document !== "undefined" ? document.cookie : "")
+    (typeof document !== "undefined" ? decodeURI(document.cookie) : "")
       .split(";")
       .map((pair) => pair.split("="))
       .filter(([key]) => key === "middleware-slug")
-      .map(([, value]) => value.trim()) ?? [];
+      .map(([, value]) => value.trim().split("%2F").join("/")) ?? [];
   console.log("Values", values);
   console.log("Slug", slug);
-  return values.some((value) => value === slug?.join("/"));
+  return values.some((value) => value.includes(slug.join("/")));
 }
 
 export default function ContentPage() {
