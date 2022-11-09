@@ -7,8 +7,6 @@ function hasMiddlewareMatched(slug?: string[]) {
       .map((pair) => pair.split("="))
       .filter(([key]) => key === "middleware-slug")
       .map(([, value]) => value.trim()) ?? [];
-  console.log("Values", values);
-  console.log("Slug", slug);
   return values.some((value) => value === slug?.join("/"));
 }
 
